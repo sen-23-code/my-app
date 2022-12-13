@@ -17,6 +17,12 @@ node{
   stage('Build Docker Imager'){
    sh 'docker build -t balajihooghli/myweb:0.0.2 .'
    }
+   stage('Docker Image Push'){
+   withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
+   sh "docker login -u balajihooghli -p ${dockerPassword}"
+    }
+   sh 'docker push balajihooghli/myweb:0.0.2'
+   }
    stage('Nexus Image Push'){
    withCredentials([string(credentialsId: 'nexus', variable: 'nexusPassword')]) {
    sh "docker login -u admin -p ${nexusPassword} 3.108.59.242:8083"
